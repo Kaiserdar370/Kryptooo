@@ -1,0 +1,210 @@
+<div class="tape" aria-label="Live ticker tape" role="region">
+  <div class="tape-track" id="tape"></div>
+</div>
+<main id="main">
+  <div id="top"></div>
+
+  <!-- ==================================================================
+       Hero: live chart + benchmarks
+       ================================================================== -->
+  <section class="wrap hero" aria-labelledby="h1">
+    <div class="hero-head">
+      <h1 id="h1">Stocks and crypto on one tape.</h1>
+      <p>Quotes for 15 US large caps, 12 digital assets and the main benchmarks, refreshed every one to three seconds. Select any row on the page to load its chart.</p>
+      <div class="status">
+        <span class="live"><i aria-hidden="true"></i>Simulated feed</span>
+        <span id="clock" class="muted">--:--:--</span>
+      </div>
+    </div>
+
+    <!-- Benchmarks -->
+    <aside class="panel idx" aria-label="Benchmarks">
+      <div class="ph"><h3>Benchmarks</h3><small>Select to chart</small></div>
+      <div class="idx-list" id="idxList"></div>
+      <div class="skel" data-skel="4" aria-hidden="true"></div>
+    </aside>
+
+    <!-- Main chart -->
+    <div class="panel chart-panel" id="chartPanel">
+      <div class="skel-over skel" data-skel-chart aria-hidden="true">
+        <span class="sk" style="height:30px;width:40%"></span>
+        <span class="sk" style="height:52px;width:55%"></span>
+        <span class="sk big"></span>
+      </div>
+
+      <div class="c-top">
+        <div class="c-id">
+          <span id="hGlyph"></span>
+          <div class="nm"><b id="hName">S&amp;P 500</b><small id="hSub">US large cap</small></div>
+          <button type="button" class="star" id="hStar" data-star data-b="star" data-s="SPX" aria-pressed="false" aria-label="Add to watchlist">
+            <svg class="ic" aria-hidden="true"><use href="#i-star"/></svg>
+          </button>
+        </div>
+        <div class="seg" role="group" aria-label="Chart range" id="ranges">
+          <button type="button" data-range="1D" aria-pressed="true">1D</button>
+          <button type="button" data-range="1W" aria-pressed="false">1W</button>
+          <button type="button" data-range="1M" aria-pressed="false">1M</button>
+          <button type="button" data-range="1Y" aria-pressed="false">1Y</button>
+        </div>
+      </div>
+
+      <div class="c-price">
+        <span class="hprice" id="hPrice" data-b="hprice" data-s="SPX">0</span>
+        <span class="c-chg">
+          <span data-b="chg" data-s="SPX" class="px"></span>
+          <span data-b="pct" data-s="SPX" class="pill"></span>
+        </span>
+      </div>
+      <p class="c-range" id="hRange"></p>
+
+      <div class="cwrap" id="cwrap">
+        <canvas id="chart" tabindex="0" role="img" aria-label="Price chart"></canvas>
+        <div class="tip" id="tip" aria-hidden="true"></div>
+      </div>
+
+      <dl class="stats">
+        <div><dt>Open</dt><dd data-b="open" data-s="SPX"></dd></div>
+        <div><dt>Day high</dt><dd data-b="high" data-s="SPX"></dd></div>
+        <div><dt>Day low</dt><dd data-b="low" data-s="SPX"></dd></div>
+        <div><dt id="volLbl">Volume</dt><dd data-b="vol" data-s="SPX"></dd></div>
+        <div><dt>Market cap</dt><dd data-b="mcap" data-s="SPX"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Movers
+       ================================================================== -->
+  <section class="wrap sec" id="movers" aria-labelledby="mvT">
+    <div class="sec-h">
+      <h2 id="mvT">Movers</h2>
+      <p id="mvSub">Largest moves among 15 US large caps since the open.</p>
+    </div>
+    <div class="mv-grid">
+      <div class="panel">
+        <div class="mv-cols">
+          <div class="mv-col">
+            <h4 class="up"><svg class="ic" aria-hidden="true"><use href="#i-up"/></svg>Top gainers</h4>
+            <ul id="gainList"></ul>
+            <div class="skel" data-skel="6" aria-hidden="true"></div>
+          </div>
+          <div class="mv-col">
+            <h4 class="dn"><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>Top losers</h4>
+            <ul id="loseList"></ul>
+            <div class="skel" data-skel="6" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="ph"><h3>Most active</h3><small id="actUnit">Shares traded</small></div>
+        <table class="tbl">
+          <thead><tr>
+            <th class="l" scope="col">Symbol</th>
+            <th scope="col">Volume</th>
+            <th scope="col">Last</th>
+          </tr></thead>
+          <tbody id="actBody"></tbody>
+        </table>
+        <div class="skel" data-skel="6" aria-hidden="true"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Crypto
+       ================================================================== -->
+  <section class="wrap sec" id="crypto" aria-labelledby="crT">
+    <div class="sec-h">
+      <h2 id="crT">Crypto market</h2>
+      <p>Twelve assets ranked by market capitalization. Sort any column.</p>
+    </div>
+
+    <dl class="kpis">
+      <div class="kpi"><dt>Total market cap</dt>
+        <dd><span id="kCap">$0</span><span class="pill" data-b="pct" data-s="TMC"></span></dd></div>
+      <div class="kpi"><dt>24h volume</dt><dd id="kVol">$0</dd></div>
+      <div class="kpi"><dt>Bitcoin dominance</dt><dd id="kDom">0%</dd></div>
+    </dl>
+
+    <div class="cr-grid">
+      <div class="panel">
+        <div class="tbl-scroll">
+          <table class="tbl" id="crTable">
+            <thead><tr>
+              <th class="l" scope="col" style="width:44px">#</th>
+              <th class="l" scope="col" aria-sort="none"><button type="button" data-sort="name">Coin<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th scope="col" aria-sort="none"><button type="button" data-sort="price">Price<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th scope="col" aria-sort="none"><button type="button" data-sort="pct">24h<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th class="hide-sm" scope="col" aria-sort="none"><button type="button" data-sort="w">7d<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th class="hide-md" scope="col" aria-sort="descending"><button type="button" data-sort="mcap">Market cap<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th class="hide-md" scope="col" aria-sort="none"><button type="button" data-sort="vol">Volume 24h<svg class="ic" aria-hidden="true"><use href="#i-sort"/></svg></button></th>
+              <th class="hide-sm" scope="col">Last 24h</th>
+              <th scope="col"><span class="sr-only">Watch</span></th>
+            </tr></thead>
+            <tbody id="crBody"></tbody>
+          </table>
+        </div>
+        <div class="skel" data-skel="8" aria-hidden="true"></div>
+      </div>
+
+      <div class="cr-side">
+        <div class="panel" aria-labelledby="fgT">
+          <div class="ph"><h3 id="fgT">Fear and greed</h3><small>Crypto sentiment</small></div>
+          <div class="gauge" id="gauge"></div>
+          <div class="fg-read"><span class="fg-val" id="fgVal">50</span><span class="fg-lbl" id="fgLbl">Neutral</span></div>
+          <dl class="fg-hist" id="fgHist"></dl>
+          <ul class="meters" id="meters"></ul>
+        </div>
+        <div class="panel share">
+          <h3 style="font-size:14px;font-weight:650;margin-bottom:14px">Share of total market cap</h3>
+          <div class="share-bar" id="shareBar" role="img" aria-label="Market cap share by asset"></div>
+          <ul class="share-leg" id="shareLeg"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================================================================
+       Heatmap + watchlist
+       ================================================================== -->
+  <section class="wrap sec" id="map" aria-labelledby="mapT">
+    <div class="sec-h">
+      <h2 id="mapT">Market map and watchlist</h2>
+      <p id="mapSub">Tile area follows market cap. Color follows today's move.</p>
+    </div>
+    <div class="mw-grid">
+      <div class="panel heat-panel">
+        <div class="ph">
+          <h3 id="heatT">US large caps by sector</h3>
+          <div class="legend" aria-hidden="true"><span id="legLo">-4%</span><i></i><span id="legHi">+4%</span></div>
+        </div>
+        <div class="heat" id="heat" role="group" aria-label="Market heatmap"></div>
+        <div class="skel-over skel" data-skel-heat aria-hidden="true" style="top:52px;grid-template-columns:2fr 1fr 1fr;grid-auto-rows:120px">
+          <span class="sk" style="grid-row:span 2;height:100%"></span><span class="sk" style="height:100%"></span><span class="sk" style="height:100%"></span>
+          <span class="sk" style="height:100%"></span><span class="sk" style="height:100%"></span>
+        </div>
+      </div>
+
+      <aside class="panel watch" id="watch" aria-labelledby="wlT">
+        <div class="ph"><h3 id="wlT">Watchlist</h3><small>Kept in memory only</small></div>
+        <div class="wl-add">
+          <div class="search" id="wlSearch">
+            <svg class="ic" aria-hidden="true"><use href="#i-plus"/></svg>
+            <label class="sr-only" for="wlq">Add a symbol to your watchlist</label>
+            <input id="wlq" type="text" autocomplete="off" spellcheck="false" placeholder="Add a symbol"
+                   role="combobox" aria-expanded="false" aria-controls="wlResults" aria-autocomplete="list">
+            <ul class="results" id="wlResults" role="listbox" aria-label="Symbols to add" hidden></ul>
+          </div>
+        </div>
+        <ul class="wl-list" id="wlList"></ul>
+        <div class="empty-state" id="wlEmpty" hidden>
+          <b>Nothing on your list yet</b>
+          Star any quote, or type a symbol above, to track it here.
+        </div>
+      </aside>
+    </div>
+  </section>
+
+[[LEARN_SECTION]]
+</main>
